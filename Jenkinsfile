@@ -1,13 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'master',
-                    credentialsId: 'your-credential-id',
-                    url: 'https://github.com/AWSLOYAL/mydemo.git'
-            }
-        }
         stage('Switch Directory') {
             steps {
                 dir('folder1') {
@@ -22,19 +15,31 @@ pipeline {
         }
         stage('Save File') {
             steps {
-                sh 'echo "Hello from Jenkins" > folder1/newfile.txt'
-                sh 'cat folder1/newfile.txt'
+                sh '''
+                mkdir -p folder1
+                echo "Hello from Jenkins" > folder1/newfile.txt
+                cat folder1/newfile.txt
+                '''
             }
         }
         stage('Copy File') {
             steps {
-                sh 'cp folder1/newfile.txt folder2/'
+                sh '''
+                mkdir -p folder2
+                cp folder1/newfile.txt folder2/
+                echo "Copied file to folder2"
+                '''
             }
         }
         stage('Move File') {
             steps {
-                sh 'mv folder2/newfile.txt folder1/movedfile.txt'
+                sh '''
+                mkdir -p folder3
+                mv folder2/newfile.txt folder3/
+                echo "Moved file to folder3"
+                '''
             }
         }
     }
 }
+
