@@ -1,9 +1,5 @@
-from flask import Flask
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return 'Hello from CI/CD with Docker!'
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+CMD ["python", "app.py"]
